@@ -16,7 +16,10 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-
+from search.views import search
+from list_data.views import list1
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^search/', search),
+    url(r'^list/', list1),
 ]
