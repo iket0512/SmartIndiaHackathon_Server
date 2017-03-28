@@ -16,12 +16,14 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-from search.views import search
+from search.views import search,tab_titles
 from list_data.views import list1
-from login.views import prof_login
+from login.views import *
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^search/', search),
     url(r'^list/', list1),
     url(r'^prof_login/', prof_login),
+    url(r'^stu_login/', student_login),
+    url(r'^get_tabs/', tab_titles),
 ]

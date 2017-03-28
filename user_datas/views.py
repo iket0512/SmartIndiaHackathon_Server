@@ -75,9 +75,20 @@ def upload_to_student(request):
 				response_json['message']="error finding student"	
 		except Exception,e:
 			response_json['success']=False
-			response_json['message']="Some error in uploading"		
+			response_json['message']="Some error in uploading"	
 
+			url='sdvsfv'
+			json={}
+			header={}
+			response=requests.post(url,json,header)	
 
+'''
+>>> term="tuberclosis"
+>>> response=requests.get("https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term="+term+"&retmode=json")
+[u'19008416', u'18927361', u'18787170', u'18487186', u'18239126', u'18239125']
+>>> json=response.json()
+>>> json['esearchresult']['idlist']
+'''
 
 
 

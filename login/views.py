@@ -64,12 +64,12 @@ Team invincibles."""
 
 @csrf_exempt
 def student_login(request):
-	if(request.method=='POST'):
+	if(request.method=='GET'):
 		response_json={}
 		try:
-			stu_id=request.POST.get('id')
-			name=request.POST.get('name')
-			email=request.POST.get('email')
+			stu_id=request.GET.get('id')
+			name=request.GET.get('name')
+			email=request.GET.get('email')
 		except Exception,e:
 			print e
 			print 'unable to get info'
@@ -83,10 +83,12 @@ def student_login(request):
 			set_attr(student_row,'email',emailid)
 			student_row.save()
 			response_json['success']=True
+			response_json['access_token']=str(stu_id)
 			return JsonResponse(response_json)
 		except Exception,e:
 			student_row=student.objects.create(student_id=stu_id,name=name,emailid=email)
 			response_json['success']=True
+			response_json['access_token']=str(stu_id)
 			return JsonResponse(response_json)
 
 
