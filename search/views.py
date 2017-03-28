@@ -14,8 +14,8 @@ def search(request):
 	fuzz.partial_token_sort_ratio
 	response_json={}
 	try:
-		type_data='0'
-		search_keyword='tuber'
+		type_data='5'
+		search_keyword='breast cancer'
 		# search_keyword=request.GET.get('keyword')
 		# type_data=request.GET.get('type')
 	except Exception,e:
@@ -44,7 +44,37 @@ def search(request):
 				print e
 				response_json['success']=False
 				response_json['message']='error in prof_data search'
-				return JsonResponse(response_json)		
+				return JsonResponse(response_json)
+		elif(type_data=='5'):
+			response_json['article_list']=[]
+			response_json['success']=True
+			response_json['message']='Pubmed Data'
+			json={}
+			print search_keyword
+			url=str("http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&retmax=8&term="+search_keyword+"&retmode=json")
+			response=requests.get(url)
+			json=response.json()
+
+			json1=json['esearchresult']['idlist']
+			print json1
+			url1=str("http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&rettype=abstract&id=")
+			for o in json1:
+				url1=url1+str(o)+","
+			print url1
+			response1=requests.get(url1)
+			json=response1.json()
+			json2=json['result']
+			print '################################'
+			for o in json2['uids']:
+				detail={}					
+				detail['id']=json2[o]['uid']
+				detail['pubdate']=json2[o]['pubdate']
+				detail['source']=json2[o]['source']
+				detail['title']=json2[o]['title']
+				response_json['article_list'].append(detail)		
+			return JsonResponse(response_json)
+
+
 
 
 def tab_titles(request):

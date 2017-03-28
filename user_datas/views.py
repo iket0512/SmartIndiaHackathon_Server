@@ -77,10 +77,10 @@ def upload_to_student(request):
 			response_json['success']=False
 			response_json['message']="Some error in uploading"	
 
-			url='sdvsfv'
-			json={}
-			header={}
-			response=requests.post(url,json,header)	
+			# url='sdvsfv'
+			# json={}
+			# header={}
+			# response=requests.post(url,json,header)	
 
 '''
 >>> term="tuberclosis"
