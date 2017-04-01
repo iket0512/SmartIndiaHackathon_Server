@@ -10,6 +10,7 @@ class prof_data(models.Model):
 	image=models.CharField(max_length=100,null=True,blank=True)
 	name=models.CharField(max_length=100,null=False,blank=True)
 	phone=models.CharField(max_length=13,null=True,blank=True)
+	website=models.CharField(max_length=60,null=True,blank=True)
 	emailid=models.CharField(max_length=30,null=True,blank=True)
 	city=models.CharField(max_length=50,null=True,blank=True)
 	facilities=models.CharField(max_length=100,null=True,blank=True)

@@ -94,6 +94,7 @@ def prof_login(request):
 				response_json['success']=True
 				response_json['access_token']=str(row.p_id)
 				response_json['message']='OTP Verified.'
+				row.save()
 				return JsonResponse(response_json)
 			else:
 				response_json['success']=False
@@ -112,22 +113,25 @@ def student_login(request):
 			stu_id=request.GET.get('id')
 			name=request.GET.get('name')
 			email=request.GET.get('email')
+			print stu_id
+			print name
+			print email
 		except Exception,e:
 			print e
 			print 'unable to get info'
 			response_json['success']=False
 			response_json['message']='unable to get info'
 			return JsonResponse(response_json)
-
 		try:
 			student_row=student_data.objects.get(student_id=stu_id)
 			setattr(student_row,'name',name)
-			setattr(student_row,'email',emailid)
+			setattr(student_row,'emailid',email)
 			student_row.save()
 			response_json['success']=True
 			response_json['access_token']=str(stu_id)
 			return JsonResponse(response_json)
 		except Exception,e:
+			print e
 			student_row=student_data.objects.create(student_id=stu_id,name=name,emailid=email)
 			response_json['success']=True
 			response_json['access_token']=str(stu_id)

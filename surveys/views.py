@@ -58,15 +58,15 @@ def survey_upload(request):
 		try:
 			row=survey_data.objects.get(access_token=access_token)
 			print 3
-			set_attr(row,'user_type',user_type)
-			set_attr(row,'title',title)
-			set_attr(row,'field',field)
-			set_attr(row,'description',description)
-			set_attr(row,'question1',question1)
-			set_attr(row,'question2',question2)
-			set_attr(row,'question3',question3)
-			set_attr(row,'question4',question4)
-			set_attr(row,'permission',file_name)
+			setattr(row,'user_type',user_type)
+			setattr(row,'title',title)
+			setattr(row,'field',field)
+			setattr(row,'description',description)
+			setattr(row,'question1',question1)
+			setattr(row,'question2',question2)
+			setattr(row,'question3',question3)
+			setattr(row,'question4',question4)
+			setattr(row,'permission',file_name)
 			row.save()
 			response_json['success']=True
 			response_json['message']='survey updated'
@@ -82,6 +82,34 @@ def survey_upload(request):
 			response_json['message']='survey created'
 			print 44
 			return JsonResponse(response_json)
+
+@csrf_exempt
+def survey_upload(request):
+	response_json={}
+	if(request.method=='POST'):
+		survey_id=request.POST.get('id')
+		answer1=request.POST.get('ans1')
+		answer2=request.POST.get('ans2')
+		answer3=request.POST.get('ans3')
+		answer4=request.POST.get('ans4')
+		access_token=request.POST.get('access_token')
+	try:	
+		row=survey_submitted.objects.get(survey_id=survey_id)
+		if(row.access_token==access_token):
+			response_json['success']=False
+			response_json['message']='Response already submitted before'
+			return JsonResponse(response_json)
+	except Exception,e:
+		row=survey_submitted.objects.create(survey_id=survey_id,access_token=access_token,answer1=answer1,answer2=answer2,answer3=answer3,answer4=answer4)
+		response_json['success']=True
+		response_json['message']='Response added successfully'
+		return JsonResponse(response_json)
+			
+
+
+
+
+
 
 
 

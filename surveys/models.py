@@ -19,3 +19,15 @@ class survey_data(models.Model):
 	permission=models.FileField(upload_to='resources',null=True,blank=True)
 	modified= models.DateField(auto_now=True,auto_now_add=False,null=True)
 	created= models.DateField(auto_now=False,auto_now_add=True,null=True)
+
+class surveys_submitted(models.Model):
+	survey_id=models.IntegerField(blank=True,null=True)
+	access_token=models.CharField(max_length=200,blank=True,null=True)
+	answer1=models.IntegerField(default=2)
+	answer2=models.IntegerField(default=2)
+	answer3=models.IntegerField(default=2)
+	answer4=models.IntegerField(default=2)
+	modified= models.DateField(auto_now=True,auto_now_add=False,null=True)
+	created= models.DateField(auto_now=False,auto_now_add=True,null=True)	
+
+		

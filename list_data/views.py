@@ -22,12 +22,14 @@ def list1(request):
 		type1=request.GET.get('type')
 		city=request.GET.get('city')
 		topic=request.GET.get('topic')
+		print type1
+		print city
+		print topic
 	except	Exception,e:
 		print e
 		response_json['success']=False
 		response_json['message']='Data not received properly'
 		return response_json
-	# college=request.GET.get('college')
 	flag=0
 	if(city!='zz' and topic=='zz'):
 		flag=1
@@ -37,34 +39,36 @@ def list1(request):
 		flag=3
 	response_json={}
 	response_json['city_list']=[]
-	response_json['topic_list']=[]	
+	response_json['topic_list']=[]
+	print '43'
 	try:
-		if(type1==1):
-			response['type']='1'
+		print 'here after try'
+		if(type1=='1'):
+			response_json['type']='1'
 			city_list=equipment_data.objects.values('city').distinct()
 			topic_list=equipment_data.objects.values('institute').distinct()
-		elif(type1==2):
-			response['type']='2'
+		elif(type1=='2'):
+			response_json['type']='2'
 			city_list=incubators_data.objects.values('city').distinct()
 			topic_list=equipment_data.objects.filter(institute='Incubator')
-		elif(type1==3):
-			response['type']='3'
+		elif(type1=='3'):
+			response_json['type']='3'
 			city_list=biotech_data.objects.values('city').distinct()
 			topic_list=equipment_data.objects.filter(institute='Biotech Park')
-		elif(type1==4):
-			response['type']='4'
+		elif(type1=='4'):
+			response_json['type']='4'
 			city_list=institute_data.objects.values('city').distinct()
 			topic_list=equipment_data.objects.filter(institute='Other Institutes')
-		elif(type1==5):
-			response['type']='5'
+		elif(type1=='5'):
+			response_json['type']='5'
 			city_list=incubators_data.objects.values('city').distinct()
 			topic_list=survey_data.objects.values('field').distinct()
-		elif(type1==6):
-			response['type']='6'
+		elif(type1=='6'):
+			response_json['type']='6'
 			city_list=student_data.objects.values('city').distinct()
 			topic_list=student_data.objects.values('specialization').distinct()
-		elif(type1==7):
-			response['type']='7'
+		elif(type1=='7'):
+			response_json['type']='7'
 			city_list=research_data.objects.values('city').distinct()
 			topic_list=research_data.objects.values('field').distinct()
 		try:
@@ -82,22 +86,22 @@ def list1(request):
 
 		try: 
 			for o in topic_list:
-				if(type1==1):
+				if(type1=='1'):
 					temp={}
 					print 'adding topic in 1'
 					temp['topic']=str(o['institute'])
 					response_json['topic_list'].append(temp)
-				elif(type1==2 or type1==3 or type1==4):
+				elif(type1=='2' or type1=='3' or type1=='4'):
 					temp={}
 					print 'adding topic in 2,3,4'
 					temp['topic']=str(o.name)
 					response_json['topic_list'].append(temp)
-				elif(type1==5 or type1==7):
+				elif(type1=='5' or type1=='7'):
 					temp={}
 					print 'adding topic in 5,7'
 					temp['topic']=str(o['field'])
 					response_json['topic_list'].append(temp)
-				elif(type1==6):
+				elif(type1=='6'):
 					temp={}
 					print 'adding topic in 6'
 					temp['topic']=str(o['specialization'])
@@ -121,7 +125,7 @@ def list1(request):
 	if(request.method=='GET'):
 		response_json['success']=True
 ###############################################################################3		
-		if(type1==1):
+		if(type1=='1'):
 			try:
 				response_json['institutionItemDataList']=[]
 				if (flag==0 or flag==2):
@@ -150,7 +154,7 @@ def list1(request):
 				return JsonResponse(response_json)
 				######################################			
 # incubators  ####
-		elif(type1==2):
+		elif(type1=='2'):
 			try:
 				response_json['institutionItemDataList']=[]
 				if (flag==0 or flag==2):
@@ -180,7 +184,7 @@ def list1(request):
 				return JsonResponse(response_json)
 				###########################################
 # biotech parks#####
-		elif(type1==3):
+		elif(type1=='3'):
 			try:
 				response_json['institutionItemDataList']=[]
 				if (flag==0 or flag==2):
@@ -209,7 +213,7 @@ def list1(request):
 				return JsonResponse(response_json)
 	#########################################################
 #institution####				
-		elif(type1==4):
+		elif(type1=='4'):
 			try:
 				response_json['institutionItemDataList']=[]
 				if (flag==0 or flag==2):
@@ -239,7 +243,7 @@ def list1(request):
 
 		##########################################################
 	#survey			
-		elif(type1==5):
+		elif(type1=='5'):
 			try:
 				response_json['surveyItemDataList']=[]
 				if (flag==0 or flag==2):
@@ -270,6 +274,7 @@ def list1(request):
 	########################################################################
 	#			
 
+	print str(response_json)
 
 	return JsonResponse(response_json)
 

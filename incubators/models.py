@@ -18,3 +18,4 @@ class incubators_data(models.Model):
 	contact_phone=models.CharField(max_length=25,blank=True,null=True)
 	latitude=models.CharField(max_length=25,blank=True,null=True)
 	longitude=models.CharField(max_length=25,blank=True,null=True)
+	image=models.CharField(max_length=1500,blank=True,null=True)
