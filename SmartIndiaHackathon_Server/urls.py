@@ -18,12 +18,24 @@ from django.conf.urls import url
 from django.contrib import admin
 from search.views import search,tab_titles
 from list_data.views import list1
+from surveys.views import *
 from login.views import *
+from list_data import *
+from user_datas.views import *
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^search/', search),
     url(r'^list/', list1),
-    url(r'^prof_login/', prof_login),
-    url(r'^stu_login/', student_login),
+    url(r'^inst_signup/', prof_signup),
+    url(r'^user_login/', student_login),
     url(r'^get_tabs/', tab_titles),
+    url(r'^inst_login/', prof_login),
+    url(r'^survey_upload/',survey_upload),
+    url(r'^pro_upload/', add_details),
+    url(r'^filter/', list1),
 ]
+from django.conf import settings
+from django.conf.urls.static import static
+urlpatterns+=static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+urlpatterns+=static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+

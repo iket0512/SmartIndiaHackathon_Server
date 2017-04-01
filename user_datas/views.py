@@ -3,40 +3,66 @@ from .models import *
 from django.http import HttpResponseRedirect, HttpResponse
 import requests
 import operator
+from django.utils import timezone
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from user_datas.models import *
+import hashlib
+from .models import *
 # Create your views here.
 
 @csrf_exempt
-def add_student_details(request):
-	if(request.method=='GET'):
+def add_details(request):
+	if(request.method=='POST'):
 		response_json={}
 		try:
-			stu_id=request.GET.get('id')
-			institution=request.GET.get('institution')
-			skills=request.GET.get('skills')
-			place=request.GET.get('place')
-			current_year=request.Get.get('current_year')
-			degree=request.GET.get('degree')
-			experience=request.GET.get('experience')
-		except Exception.e:
+			user_id=request.POST.get('access_token')
+			user_type=request.POST.get('key_type')
+			institution=request.POST.get('user_institution')
+			skills=request.POST.get('user_skills')
+			place=request.POST.get('user_place')
+			year=request.POST.get('year')
+			specialization=request.POST.get('specialization')
+			degree=request.POST.get('qualification')
+			experience=request.POST.get('user_experience')
+			print 'line 26'
+			file=request.FILES.get('file').name
+			print user_id
+			print str(file)
+		except Exception,e:
 			print e
+			print 'exception 1st'
 			response_json['success']=False
 			response_json['message']='Error in receiving data'
-			return
-		try:	
-			student_row=student_data.objects.get(student_id=stu_id)
-			set_attr(student_row,'institution',institution)
-			set_attr(student_row,'skills',skills)
-			set_attr(student_row,'place',place)
-			set_attr(student_row,'current_year',current_year)
-			set_attr(student_row,'degree',degree)
-			set_attr(student_row,'experience',experience)
+			return JsonResponse(response_json)
+
+		if(str(file)!="None"):
+			print "line 37"
+			file_name='media/profile/'+str(timezone.now())[:18].replace(" ", "")
+			file_name+=file
+			fout = open(file_name,'w')
+			print "line 41"
+			file_content = request.FILES.get('file').read()
+			fout.write(file_content)
+			fout.close()
+			print"file created"	
+			response_json['success']=True
+			response_json['message']="file uploaded"
+		try:
+			student_row=student_data.objects.get(student_id=user_id)
+			setattr(student_row,'institution',institution)
+			setattr(student_row,'type1',user_type)
+			setattr(student_row,'specialization',specialization)
+			setattr(student_row,'skills',skills)
+			setattr(student_row,'place',place)
+			setattr(student_row,'year',year)
+			setattr(student_row,'degree',degree)
+			setattr(student_row,'experience',experience)
+			setattr(student_row,'image',file)
 			student_row.save()
 			response_json['success']=True
 		except Exception,e:
 			print e
+			print 'exception 2nd'
 			response_json['success']=False
 			response_json['message']='No such student id exists..login again'
 	return JsonResponse(response_json)
@@ -50,19 +76,8 @@ def upload_to_student(request):
 			student_id=request.GET.get('access_token')
 			file=request.FILES.get('file').name
 			print file
-			if(str(file)!="None"):
-				print "line 19"
-				file_name='media/resources/'+str(timezone.now())[:18].replace(" ", "")
-				file_name+=file
-				fout = open(file_name,'w')
-				print "line 21"
-				file_content = request.FILES.get('file').read()
-				fout.write(file_content)
-				fout.close()
-				print"file created"
+			
 
-			response_json['success']=True
-			response_json['message']="file uploaded"
 			try:
 				student_row=student_data.objects.get(student_id=student_id)
 				if(file_upload_type==1):
